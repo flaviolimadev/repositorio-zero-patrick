@@ -1,5 +1,5 @@
 # ========================================
-# DOCKERFILE - GOAL TRACKER API BACKEND
+# DOCKERFILE - GOAL TRACKER API BACKEND (SEM HEALTHCHECK)
 # ========================================
 # Multi-stage build para otimizar tamanho e segurança
 
@@ -62,10 +62,6 @@ USER nestjs
 
 # Expor porta
 EXPOSE 3000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://127.0.0.1:3000/health || exit 1
 
 # Comando para iniciar a aplicação
 CMD ["node", "dist/main"] 

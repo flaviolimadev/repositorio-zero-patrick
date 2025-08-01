@@ -92,7 +92,7 @@ echo "🚀 Testando inicialização da aplicação..."
 CONTAINER_ID=$(docker run -d \
     --name goal-tracker-test \
     --env NODE_ENV=production \
-    --env PORT=3001 \
+    --env PORT=3000 \
     --env DB_HOST=localhost \
     --env DB_PORT=5432 \
     --env DB_USERNAME=test \

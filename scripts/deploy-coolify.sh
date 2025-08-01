@@ -98,12 +98,12 @@ cat > coolify-deploy.yml << EOF
 application:
   name: ${APP_NAME}
   image: ${IMAGE_NAME}:${TAG}
-  port: 3001
+  port: 3000
 
 # Variáveis de ambiente (configure no painel do Coolify)
 environment:
   - NODE_ENV=production
-  - PORT=3001
+  - PORT=3000
   - DB_HOST=\${DB_HOST}
   - DB_PORT=5432
   - DB_USERNAME=\${DB_USERNAME}

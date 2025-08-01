@@ -23,12 +23,14 @@
     "create-env": "node scripts/create-env.js",
     "setup": "npm run create-env && npm run generate-secrets && echo 'Configure as variáveis no arquivo .env criado'",
     "docker:build": "docker build -t goal-tracker-api:latest .",
-    "docker:run": "docker run -p 3001:3001 --env-file .env goal-tracker-api:latest",
+    "docker:run": "docker run -p 3000:3000 --env-file .env goal-tracker-api:latest",
     "docker:compose": "docker-compose up -d",
     "docker:compose:down": "docker-compose down",
     "docker:compose:logs": "docker-compose logs -f",
     "docker:deploy": "chmod +x scripts/deploy-coolify.sh && ./scripts/deploy-coolify.sh",
-    "docker:test": "chmod +x scripts/test-docker-build.sh && ./scripts/test-docker-build.sh"
+    "docker:test": "chmod +x scripts/test-docker-build.sh && ./scripts/test-docker-build.sh",
+    "docker:no-healthcheck": "chmod +x scripts/switch-dockerfile.sh && ./scripts/switch-dockerfile.sh no-healthcheck",
+    "docker:with-healthcheck": "chmod +x scripts/switch-dockerfile.sh && ./scripts/switch-dockerfile.sh with-healthcheck"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

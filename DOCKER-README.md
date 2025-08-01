@@ -201,6 +201,39 @@ Se o build falhar no Coolify:
    - Dependências não instaladas
    - Erro de sintaxe no código
 
+#### Erro: "Healthcheck failed"
+
+Se o health check falhar no Coolify:
+
+```bash
+Error: connect ECONNREFUSED ::1:3001
+```
+
+**Soluções:**
+
+1. **Desabilitar health check no Coolify:**
+   - No painel do Coolify, vá em "Settings"
+   - Desabilite "Health Check"
+   - Faça deploy novamente
+
+2. **Usar Dockerfile sem health check:**
+   ```bash
+   # Renomear o Dockerfile
+   mv Dockerfile Dockerfile.with-healthcheck
+   mv Dockerfile.no-healthcheck Dockerfile
+   
+   # Fazer commit e push
+   git add .
+   git commit -m "Remove health check for Coolify"
+   git push
+   ```
+
+3. **Configurar health check manualmente:**
+   - No Coolify, configure o health check para:
+     - **Path:** `/health`
+     - **Port:** `3001`
+     - **Interval:** `30s`
+
 1. **Erro de conexão com banco:**
    ```bash
    # Verificar se o PostgreSQL está acessível
