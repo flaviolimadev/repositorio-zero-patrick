@@ -27,7 +27,8 @@
     "docker:compose": "docker-compose up -d",
     "docker:compose:down": "docker-compose down",
     "docker:compose:logs": "docker-compose logs -f",
-    "docker:deploy": "chmod +x scripts/deploy-coolify.sh && ./scripts/deploy-coolify.sh"
+    "docker:deploy": "chmod +x scripts/deploy-coolify.sh && ./scripts/deploy-coolify.sh",
+    "docker:test": "chmod +x scripts/test-docker-build.sh && ./scripts/test-docker-build.sh"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

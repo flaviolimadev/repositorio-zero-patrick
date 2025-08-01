@@ -26,12 +26,14 @@ npm run validate-env
 ### 2. Build da Imagem
 
 ```bash
+# Testar build localmente primeiro
+npm run docker:test
+
 # Build da imagem Docker
 docker build -t goal-tracker-api:latest .
 
 # Ou usar o script automatizado
-chmod +x scripts/deploy-coolify.sh
-./scripts/deploy-coolify.sh
+npm run docker:deploy
 ```
 
 ### 3. Teste Local
@@ -165,6 +167,39 @@ docker inspect goal-tracker-api
 ## 🔍 Troubleshooting
 
 ### Problemas Comuns
+
+#### Erro: "ENV-SETUP.md: not found"
+
+Se você encontrar este erro no Coolify:
+
+```bash
+ERROR: failed to solve: failed to compute cache key: failed to calculate checksum of ref: "/ENV-SETUP.md": not found
+```
+
+**Solução:**
+1. Verifique se o arquivo `ENV-SETUP.md` existe na raiz do projeto
+2. Execute o teste local: `npm run docker:test`
+3. Se o teste passar, o problema pode ser cache do Coolify
+4. Tente fazer um novo commit para forçar rebuild
+
+#### Erro: "Build failed"
+
+Se o build falhar no Coolify:
+
+1. **Teste localmente primeiro:**
+   ```bash
+   npm run docker:test
+   ```
+
+2. **Verifique os logs do build:**
+   - Acesse o painel do Coolify
+   - Clique em "Show Debug Logs"
+   - Procure por erros específicos
+
+3. **Problemas comuns:**
+   - Arquivos faltando (verifique se todos os arquivos estão commitados)
+   - Dependências não instaladas
+   - Erro de sintaxe no código
 
 1. **Erro de conexão com banco:**
    ```bash

@@ -1,0 +1,69 @@
+# ========================================
+# CONFIGURAÇÃO COOLIFY - GOAL TRACKER API
+# ========================================
+
+# Informações da aplicação
+application:
+  name: goal-tracker-api
+  port: 3001
+  healthcheck:
+    path: /health
+    interval: 30s
+    timeout: 10s
+    retries: 3
+    start_period: 40s
+
+# Configurações do Docker
+docker:
+  dockerfile: Dockerfile
+  target: production
+  build_args: []
+  context: .
+
+# Variáveis de ambiente necessárias
+environment:
+  # Configurações básicas
+  - NODE_ENV=production
+  - PORT=3001
+  
+  # Banco de dados (configure no painel do Coolify)
+  - DB_HOST=${DB_HOST}
+  - DB_PORT=5432
+  - DB_USERNAME=${DB_USERNAME}
+  - DB_PASSWORD=${DB_PASSWORD}
+  - DB_DATABASE=${DB_DATABASE}
+  - DB_SYNCHRONIZE=false
+  - DB_LOGGING=false
+  
+  # JWT (configure no painel do Coolify)
+  - JWT_SECRET=${JWT_SECRET}
+  - JWT_EXPIRES_IN=7d
+  
+  # CORS (configure no painel do Coolify)
+  - CORS_ORIGIN=${CORS_ORIGIN}
+  - CORS_CREDENTIALS=true
+  
+  # Produção
+  - DEBUG=false
+  - SWAGGER_ENABLED=false
+
+# Volumes
+volumes:
+  - ./logs:/app/logs
+  - ./uploads:/app/uploads
+
+# Rede
+network: bridge
+
+# Recursos
+resources:
+  memory: 512M
+  cpu: 0.5
+
+# Configurações de deploy
+deploy:
+  restart_policy: unless-stopped
+  update_config:
+    parallelism: 1
+    delay: 10s
+    order: start-first 

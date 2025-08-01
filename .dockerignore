@@ -66,6 +66,7 @@ eslint.config.*
 docs
 *.md
 !README.md
+!ENV-SETUP.md
 
 # Arquivos de CI/CD
 .github
