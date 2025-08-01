@@ -1,0 +1,116 @@
+# ========================================
+# DOCKER COMPOSE - GOAL TRACKER API
+# ========================================
+
+version: '3.8'
+
+services:
+  # ========================================
+  # BACKEND API
+  # ========================================
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: goal-tracker-api
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      # Configurações básicas
+      - NODE_ENV=production
+      - PORT=3001
+      
+      # Banco de dados
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - DB_DATABASE=${DB_DATABASE:-goal_tracker_db}
+      - DB_SYNCHRONIZE=${DB_SYNCHRONIZE:-false}
+      - DB_LOGGING=${DB_LOGGING:-false}
+      
+      # JWT
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-7d}
+      
+      # CORS
+      - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+      - CORS_CREDENTIALS=${CORS_CREDENTIALS:-true}
+      
+      # Desenvolvimento
+      - DEBUG=${DEBUG:-false}
+      - SWAGGER_ENABLED=${SWAGGER_ENABLED:-false}
+    volumes:
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+    depends_on:
+      - postgres
+    networks:
+      - goal-tracker-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ========================================
+  # POSTGRESQL DATABASE
+  # ========================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: goal-tracker-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${DB_DATABASE:-goal_tracker_db}
+      - POSTGRES_USER=${DB_USERNAME:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./DB_data/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+    networks:
+      - goal-tracker-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d ${DB_DATABASE:-goal_tracker_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ========================================
+  # REDIS (OPCIONAL - PARA CACHE)
+  # ========================================
+  redis:
+    image: redis:7-alpine
+    container_name: goal-tracker-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - goal-tracker-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+# ========================================
+# VOLUMES
+# ========================================
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+# ========================================
+# NETWORKS
+# ========================================
+networks:
+  goal-tracker-network:
+    driver: bridge 

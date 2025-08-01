@@ -1,0 +1,79 @@
+# ========================================
+# DOCKERIGNORE - GOAL TRACKER API BACKEND
+# ========================================
+
+# Dependências
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos de desenvolvimento
+.git
+.gitignore
+README.md
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Arquivos de build e distribuição
+dist
+build
+coverage
+
+# Arquivos de teste
+test
+tests
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+
+# Arquivos de IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Uploads (serão criados em runtime)
+uploads
+
+# Arquivos temporários
+tmp
+temp
+
+# Arquivos de cache
+.cache
+.parcel-cache
+
+# Arquivos de configuração local
+.prettierrc
+.eslintrc*
+eslint.config.*
+
+# Arquivos de documentação
+docs
+*.md
+!README.md
+
+# Arquivos de CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+.circleci
+
+# Arquivos de Docker
+Dockerfile*
+docker-compose*
+.dockerignore 
